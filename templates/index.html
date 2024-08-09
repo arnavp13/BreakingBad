@@ -1,26 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Random Quote</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        function blankQuote() {
-            fetch('/blank_quote')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('quote').innerText = data.quote;
-                    document.getElementById('author').innerText = `— ${data.author}`;
-                });
-        }
+      let currentAuthor;
+
+      function blankQuote() {
+        fetch("/blank_quote")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("quote").innerText = data.quote;
+            document.getElementById("author").innerText = `— ${data.author}`;
+            document.getElementById("myButton").style.display = "none";
+            currentAuthor = data.author; // Store the author
+          });
+      }
+
+      function makeGuess() {
+        let guess = document.getElementById("guessInput").value;
+        axios
+          .post("/check_guess", {
+            guess: guess,
+            author: currentAuthor,
+          })
+          .then(function (response) {
+            document.getElementById("quote").textContent =
+              response.data.message;
+            if (response.data.correct) {
+              document.getElementById(
+                "author"
+              ).innerText = `— ${currentAuthor}`;
+              document.getElementById("author").style.display = "block";
+            }
+          })
+          .catch(function (error) {
+            console.error("Error:", error);
+            document.getElementById("guessResult").textContent =
+              "An error occurred. Please try again.";
+          });
+        document.getElementById("guessInput").value = "";
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Random Quote</h1>
     <blockquote>
-        <p id="quote">{{ quote }}</p>
-        <footer id="author">— {{ author }}</footer>
+      <p id="quote"></p>
+      <footer id="author">- Who Said This?</footer>
     </blockquote>
-    <button onclick="blankQuote()">Blank Out Half the Words</button>
-</body>
+    <button id="myButton" onclick="blankQuote()">Start</button>
+    <br />
+    <br />
+    <div>
+      <input type="text" id="guessInput" placeholder="Enter your guess" />
+      <button onclick="makeGuess()">Guess</button>
+    </div>
+    <p id="guessResult"></p>
+  </body>
 </html>
