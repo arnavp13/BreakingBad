@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quote</title>
+    <script>
+        function blankQuote() {
+            fetch('/blank_quote')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('quote').innerText = data.quote;
+                    document.getElementById('author').innerText = `— ${data.author}`;
+                });
+        }
+    </script>
+</head>
+<body>
+    <h1>Random Quote</h1>
+    <blockquote>
+        <p id="quote">{{ quote }}</p>
+        <footer id="author">— {{ author }}</footer>
+    </blockquote>
+    <button onclick="blankQuote()">Blank Out Half the Words</button>
+</body>
+</html>
