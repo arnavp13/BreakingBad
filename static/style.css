@@ -117,3 +117,27 @@ input[type="text"]:focus {
 #restartButton:hover {
   background-color: #148f77; /* Darker green on hover */
 }
+
+/* Styles for correct message */
+#correct {
+  display: inline-block;
+  background-color: #2ecc71; /* Breaking Bad green */
+  color: #ffffff; /* White text */
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+}
+
+/* Styles for wrong message */
+#wrong {
+  display: inline-block;
+  background-color: #e74c3c; /* Breaking Bad red */
+  color: #ffffff; /* White text */
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+}

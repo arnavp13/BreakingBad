@@ -103,7 +103,28 @@ def check_guess():
             'message': f"Correct! The author was {author}."
         })
 
+@app.route('/restart')
+def restart():
+    global globalquote  # Declare that we're using the global variables
+    global globalauthor
 
+    quote, author = get_random_quote()
+    globalquote = quote
+    globalauthor = author
+
+    global globalblanks
+    global globalindex
+
+    words = globalquote.split()
+    num_to_blank = len(words) // 2
+    indices_to_blank = random.sample(range(len(words)), num_to_blank)
+    globalindex = set(indices_to_blank)  # Update global variable with blank indices
+
+    blanked_words = [
+        word if i not in indices_to_blank else '_____' for i, word in enumerate(words)]
+    blanked_quote = ' '.join(blanked_words)
+    globalblanks = blanked_quote
+    return jsonify({'quote': blanked_quote, 'author': globalauthor, 'blanks': list(globalindex)})
 
 @app.route('/login')
 def login():

@@ -1,4 +1,7 @@
 let currentAuthor;
+let correct = 0;
+let wrong = 0;
+
 
 function blankQuote() {
   fetch("/blank_quote")
@@ -30,23 +33,26 @@ function makeGuess() {
 
       if (response.data.correct) {
         // Correct guess: Show author, hide input and buttons
+        document.getElementById("correct").innerText = ++correct;
+
         document.getElementById("author").innerText = `— ${currentAuthor}`;
-        document.getElementById("author").style.display = "block";
+        document.getElementById("author").style.display = "";
         document.getElementById("guessInput").style.display = "none";
         document.getElementById("myButton").style.display = "none";
         document.getElementById("guessResult").style.display = "none";
         document.getElementById("makeGuess").style.display = "none";
-        document.getElementById("restartButton").style.display = "block"; // Show restart button
+        document.getElementById("restartButton").style.display = ""; // Show restart button
       } else if (
         !response.data.correct &&
         !response.data.message.includes("____")
       ) {
+        document.getElementById("wrong").innerText = ++wrong;
         // Incorrect guess with no more blanks: Hide input and buttons
         document.getElementById("guessInput").style.display = "none";
         document.getElementById("myButton").style.display = "none";
         document.getElementById("guessResult").style.display = "none";
         document.getElementById("makeGuess").style.display = "none";
-        document.getElementById("restartButton").style.display = "block"; // Show restart button
+        document.getElementById("restartButton").style.display = ""; // Show restart button
       } else {
         // Incorrect guess but with blanks remaining
         document.getElementById("guessResult").textContent = "Try again!";
@@ -62,15 +68,16 @@ function makeGuess() {
 }
 
 function restartGame() {
-  fetch("/blank_quote")
+  fetch("/restart")
     .then((response) => response.json())
     .then((data) => {
       document.getElementById("quote").innerText = data.quote;
       document.getElementById("author").innerText = `— ${data.author}`;
+      document.getElementById("myButton").style.display = "";
+      document.getElementById("guessInput").style.display = "";
       document.getElementById("myButton").style.display = "none";
-      document.getElementById("guessInput").style.display = "block";
-      document.getElementById("myButton").style.display = "none";
-      document.getElementById("guessResult").style.display = "block";
+      document.getElementById("guessResult").style.display = "";
+      document.getElementById("makeGuess").style.display = "";
       document.getElementById("restartButton").style.display = "none"; // Hide restart button
       currentAuthor = data.author; // Store the author
     });

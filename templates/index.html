@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Breaking Bad</title>
+    <title>Heisenberg's Challenge</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
   </head>
   <body>
-    <h1>Random Quote</h1>
+    <h1>Heisenberg's Challenge</h1>
     <blockquote>
       <p id="quote"></p>
       <footer id="author">- Who Said This?</footer>
@@ -25,5 +25,11 @@
     <a href="{{ url_for('login') }}" class="button">Login/Create Account</a>
 
     <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
+
+<br>
+<br>
+<br>
+    Correct:<p id="correct"></p>
+    Wrong:<p id="wrong"></p>
   </body>
 </html>
