@@ -3,47 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Quote</title>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-      let currentAuthor;
-
-      function blankQuote() {
-        fetch("/blank_quote")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("quote").innerText = data.quote;
-            document.getElementById("author").innerText = `— ${data.author}`;
-            document.getElementById("myButton").style.display = "none";
-            currentAuthor = data.author; // Store the author
-          });
-      }
-
-      function makeGuess() {
-        let guess = document.getElementById("guessInput").value;
-        axios
-          .post("/check_guess", {
-            guess: guess,
-            author: currentAuthor,
-          })
-          .then(function (response) {
-            document.getElementById("quote").textContent =
-              response.data.message;
-            if (response.data.correct) {
-              document.getElementById(
-                "author"
-              ).innerText = `— ${currentAuthor}`;
-              document.getElementById("author").style.display = "block";
-            }
-          })
-          .catch(function (error) {
-            console.error("Error:", error);
-            document.getElementById("guessResult").textContent =
-              "An error occurred. Please try again.";
-          });
-        document.getElementById("guessInput").value = "";
-      }
-    </script>
+    <title>Breaking Bad</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
   </head>
   <body>
     <h1>Random Quote</h1>
@@ -55,9 +17,13 @@
     <br />
     <br />
     <div>
-      <input type="text" id="guessInput" placeholder="Enter your guess" />
-      <button onclick="makeGuess()">Guess</button>
+      <input type="text" id="guessInput" placeholder="Enter your guess" minlength="3" required />
+      <button id= "makeGuess" onclick="makeGuess()">Guess</button>
     </div>
     <p id="guessResult"></p>
+    <br />
+    <a href="{{ url_for('login') }}" class="button">Login/Create Account</a>
+
+    <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
   </body>
 </html>

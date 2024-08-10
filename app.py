@@ -36,33 +36,7 @@ def reveal_word(quote, blanked_indices, original_quote):
     return ' '.join(words), blanked_indices
 
 
-def guess_quote():
-    original_quote, author = get_random_quote()
-    quote, blanked_indices = blank_out_words(original_quote)
 
-    print(f"\nQuote: \"{quote}\"")
-    print("Who said this?")
-
-    while True:
-        guess = input()
-        while len(guess) < 3:
-            print("Guess has to be at least 3 letters long")
-            print("\nTry Again")
-            guess = input()
-        if guess.lower() in author.lower():
-            print(f"Correct! It was {author}.")
-            break
-        else:
-            print("Incorrect!")
-            if blanked_indices:
-                quote, blanked_indices = reveal_word(
-                    quote, blanked_indices, original_quote)
-                print(f"Here's an updated quote: \"{quote}\"")
-                print("\nGuess Again: ")
-            else:
-                print(
-                    f"No more words to reveal. The correct answer was {author}.")
-                break
 
 
 globalquote = ""
@@ -113,6 +87,12 @@ def check_guess():
         globalblanks = new_blanks
         globalindex = updated_indices
     
+        if len(globalindex) < 1:
+            return jsonify({
+            'correct': False,
+            'message': f"Wrong! the correct author was {author}"
+        })
+
         return jsonify({
             'correct': False,
             'message': globalblanks
@@ -125,6 +105,11 @@ def check_guess():
 
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -135,4 +120,33 @@ if __name__ == "__main__":
         play_again = input("\nDo you want to try another quote? (yes/no): ").lower()
         if play_again != 'yes':
             break
+            
+
+def guess_quote():
+    original_quote, author = get_random_quote()
+    quote, blanked_indices = blank_out_words(original_quote)
+
+    print(f"\nQuote: \"{quote}\"")
+    print("Who said this?")
+
+    while True:
+        guess = input()
+        while len(guess) < 3:
+            print("Guess has to be at least 3 letters long")
+            print("\nTry Again")
+            guess = input()
+        if guess.lower() in author.lower():
+            print(f"Correct! It was {author}.")
+            break
+        else:
+            print("Incorrect!")
+            if blanked_indices:
+                quote, blanked_indices = reveal_word(
+                    quote, blanked_indices, original_quote)
+                print(f"Here's an updated quote: \"{quote}\"")
+                print("\nGuess Again: ")
+            else:
+                print(
+                    f"No more words to reveal. The correct answer was {author}.")
+                break
 '''
