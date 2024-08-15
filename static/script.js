@@ -82,3 +82,43 @@ function restartGame() {
       currentAuthor = data.author; // Store the author
     });
 }
+
+
+
+
+process.stdin.setEncoding("utf8");
+const fs = require("fs");
+const path = require("path");
+const express = require("express");
+const http = require("http");
+const bodyParser = require("body-parser");
+const axios = require("axios");
+require("dotenv").config();
+const bcrypt = require("bcrypt");
+const port = process.env.PORT || 4000;
+
+const { MongoClient, ServerApiVersion } = require("mongodb");
+
+// Use environment variable for MongoDB URI
+const uri =
+  process.env.MONGODB_URI ||
+  "mongodb+srv://apal:weather@cluster0.bn5qnxy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const databaseAndCollection = {
+  db: "results",
+  collection: "results",
+};
+
