@@ -84,7 +84,7 @@ function restartGame() {
 }
 
 
-
+/*
 
 process.stdin.setEncoding("utf8");
 const fs = require("fs");
@@ -102,8 +102,13 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 // Use environment variable for MongoDB URI
 const uri =
   process.env.MONGODB_URI ||
-  "mongodb+srv://apal:weather@cluster0.bn5qnxy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://arnavpal2003:92lkceHKrH3BOpC9@logindata.mo1ll.mongodb.net/?retryWrites=true&w=majority&appName=LoginData";
+//92lkceHKrH3BOpC9
+//arnavpal2003
 
+//mongodb+srv://arnavpal2003:92lkceHKrH3BOpC9@logindata.mo1ll.mongodb.net/
+
+//mongodb+srv://arnavpal2003:92lkceHKrH3BOpC9@logindata.mo1ll.mongodb.net/?retryWrites=true&w=majority&appName=LoginData
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -122,3 +127,19 @@ const databaseAndCollection = {
   collection: "results",
 };
 
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Search for the provided username and password in MongoDB
+    client.db(databaseAndCollection.db).collection(databaseAndCollection.collection).findOne({ username, password }, (err, result) => {
+        if (err) {
+            console.error('Error searching for login data:', err);
+            res.status(500).send('Error processing login');
+            return;
+        }
+
+        if (result) {
+            res.render("index")
+        }
+    });
+});*/

@@ -1,0 +1,11 @@
+{
+  "name": "urndle",
+  "version": "1.0.0",
+  "description": "This is a web-based game where players guess the character who said a given Breaking Bad quote.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

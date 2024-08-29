@@ -42,6 +42,7 @@ def reveal_word(quote, blanked_indices, original_quote):
 globalquote = ""
 globalauthor = ""
 globalblanks = ""
+globalcount = 0
 globalindex = set()  # Initialize as an empty set to store blank indices
 
 
@@ -62,7 +63,7 @@ def blank_quote():
     global globalindex
 
     words = globalquote.split()
-    num_to_blank = len(words) // 2
+    num_to_blank = int(len(words) * 0.8)
     indices_to_blank = random.sample(range(len(words)), num_to_blank)
     globalindex = set(indices_to_blank)  # Update global variable with blank indices
 
@@ -75,7 +76,7 @@ def blank_quote():
 
 @app.route('/check_guess', methods=['POST'])
 def check_guess():
-    global globalblanks, globalindex, globalauthor
+    global globalblanks, globalindex, globalauthor, globalcount
 
     data = request.json
     guess = data['guess']
@@ -86,7 +87,9 @@ def check_guess():
         new_blanks, updated_indices = reveal_word(globalblanks, globalindex, globalquote)
         globalblanks = new_blanks
         globalindex = updated_indices
-    
+        globalcount = globalcount+1
+
+
         if len(globalindex) < 1:
             return jsonify({
             'correct': False,
@@ -116,7 +119,7 @@ def restart():
     global globalindex
 
     words = globalquote.split()
-    num_to_blank = len(words) // 2
+    num_to_blank = int(len(words) * 0.8)
     indices_to_blank = random.sample(range(len(words)), num_to_blank)
     globalindex = set(indices_to_blank)  # Update global variable with blank indices
 
@@ -132,8 +135,14 @@ def login():
 
 
 
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
 
 '''if __name__ == "__main__":
     while True:
